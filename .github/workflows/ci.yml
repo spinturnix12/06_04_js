@@ -15,10 +15,12 @@ jobs:
       # TODO: укажите шаги по:
       # 1. Установке зависимостей
       - name: dependencies
-        uses: sudo snap install node --classic && npm install
+        run:
+          sudo snap install node --classic && npm install
       # 2. Сборке проекта
       - name: Build
-        uses: npm run build
+        run:
+          npm run build
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v1
         with:
