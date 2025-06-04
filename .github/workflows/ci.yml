@@ -8,13 +8,25 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
+    # TODO: укажите нужные permissions для GITHUB_TOKEN
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-      # TODO: укажите шаги по:
-      # 1. Установке зависимостей
-      # 2. Сборке проекта  
+      # TODO: укажите нужные значения для action setup-java
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+      - name: Build & Deploy
+        run:
+          mvn -B deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v1
         with:
@@ -32,4 +44,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
-
